@@ -1,5 +1,6 @@
 package com.cydeo.controller;
 
+import com.cydeo.dto.RoleDTO;
 import com.cydeo.dto.UserDTO;
 import com.cydeo.service.RoleService;
 import com.cydeo.service.UserService;
@@ -7,6 +8,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -17,7 +20,7 @@ public class UserControl {
     private final RoleService roleService;
     private final UserService userService;
 
-    @GetMapping("create")
+    @GetMapping("/create")
     public String createUser(Model model){
         model.addAttribute("user", new UserDTO());
         model.addAttribute("roles", roleService.findAll());
@@ -25,4 +28,14 @@ public class UserControl {
 
         return "/user/create";
     }
+    @PostMapping("/save")
+    public String saveUser(@ModelAttribute("user") UserDTO user, @ModelAttribute("role")String role){
+        user.setRole(roleService.findById(Long.parseLong(role)));
+        System.out.println(role);
+        userService.save(user);
+        return "redirect:/user/create";
+    }
+
+
+
 }
