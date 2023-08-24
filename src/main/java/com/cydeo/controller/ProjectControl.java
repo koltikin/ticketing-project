@@ -6,10 +6,7 @@ import com.cydeo.service.impl.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @Controller
@@ -32,6 +29,12 @@ public class ProjectControl {
     public String projectSave(@ModelAttribute("project") ProjectDTO project){
         projectService.save(project);
 
+        return "redirect:/project/create";
+    }
+
+    @GetMapping("/delete/{projectCode}")
+    public String projectDelete(@PathVariable("projectCode") String projectCode){
+        projectService.deleteById(projectCode);
         return "redirect:/project/create";
     }
 
