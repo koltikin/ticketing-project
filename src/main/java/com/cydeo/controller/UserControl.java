@@ -29,9 +29,7 @@ public class UserControl {
         return "/user/create";
     }
     @PostMapping("/save")
-    public String saveUser(@ModelAttribute("user") UserDTO user, @ModelAttribute("role")String role){
-        user.setRole(roleService.findById(Long.parseLong(role)));
-        System.out.println(role);
+    public String saveUser(@ModelAttribute("user") UserDTO user){
         userService.save(user);
         return "redirect:/user/create";
     }
