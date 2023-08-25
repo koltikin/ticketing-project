@@ -137,7 +137,7 @@
                                                 <td>
                                                     <a th:href="@{/project/update/{projectCode}(projectCode = ${prj.getProjectCode()})}"><button type="button" class="btn btn-warning rounded-0">Update</button></a>
                                                     <a th:href="@{/project/delete/{projectCode}(projectCode = ${prj.getProjectCode()})}"><button type="button" class="btn btn-danger rounded-0">Delete</button></a>
-                                                    <a href="#"><button type="button" class="btn btn-info rounded-0">Complete</button></a>
+                                                    <a th:href="@{/project/complete/{projectCode}(projectCode = ${prj.getProjectCode()})}"><button type="button" th:disabled="${prj.projectStatus.value == 'Completed' || prj.projectStatus.value == 'Open'}" class="btn btn-info rounded-0">Complete</button></a>
                                                 </td>
                                             </tr>
                                             </tbody>

@@ -45,7 +45,7 @@
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label for="projectcode" class="col-form-label">Project Code</label>
-                                                    <input id="projectcode" th:field="*{projectCode}" type="text" class="form-control" placeholder="project code">
+                                                    <input id="projectcode" th:field="*{projectCode}" th:readonly="true" type="text" class="form-control" placeholder="project code">
                                                 </div>
                                             </div>
                                         </div>
@@ -137,7 +137,7 @@
                                                 <td>
                                                     <a th:href="@{/project/update/{projectCode}(projectCode = ${prj.getProjectCode()})}"><button type="button" class="btn btn-warning rounded-0">Update</button></a>
                                                     <a th:href="@{/project/delete/{projectCode}(projectCode = ${prj.getProjectCode()})}"><button type="button" class="btn btn-danger rounded-0">Delete</button></a>
-                                                    <a href="#"><button type="button" class="btn btn-info rounded-0">Complete</button></a>
+                                                    <a th:href="@{/project/complete/{projectCode}(projectCode = ${prj.getProjectCode()})}"><button type="button" th:disabled="${prj.projectStatus.value == 'Completed' || prj.projectStatus.value == 'Open'}" class="btn btn-info rounded-0">Complete</button></a>
                                                 </td>
                                             </tr>
                                             </tbody>
