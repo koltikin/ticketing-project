@@ -1,7 +1,9 @@
 package com.cydeo.controller;
 import com.cydeo.dto.ProjectDTO;
+import com.cydeo.dto.UserDTO;
+import com.cydeo.enums.Status;
 import com.cydeo.service.ProjectService;
-import com.cydeo.service.UserService;
+import com.cydeo.service.impl.ProjectServiceImpl;
 import com.cydeo.service.impl.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProjectControl {
 
     private final UserServiceImpl userService;
-    private final ProjectService projectService;
+    private final ProjectServiceImpl projectService;
     @GetMapping("/create")
     public String projectCreate(Model model){
 
@@ -37,5 +39,24 @@ public class ProjectControl {
         projectService.deleteById(projectCode);
         return "redirect:/project/create";
     }
+
+    @GetMapping("/update/{projectCode}")
+    public String projectUpdate(@PathVariable("projectCode") String projectCode, Model model){
+
+        model.addAttribute("project", projectService.findById(projectCode));
+        model.addAttribute("managers", userService.findManager());
+        model.addAttribute("projects", projectService.findAll());
+
+        return "/project/update";
+    }
+    @PostMapping("/update")
+    public String projectUpdate(@ModelAttribute("project") ProjectDTO project){
+
+        projectService.updateStatus(project,project.getProjectCode());
+        projectService.update(project);
+        return "redirect:/project/create";
+
+    }
+
 
 }
