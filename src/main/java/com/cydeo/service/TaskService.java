@@ -5,5 +5,5 @@ import org.springframework.stereotype.Service;
 
 
 public interface TaskService extends CrudService<TaskDTO,Long>{
-    void update(TaskDTO task, Long taskId);
+
 }

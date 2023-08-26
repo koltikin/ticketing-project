@@ -28,7 +28,7 @@ public class TaskControl {
     }
 
     @PostMapping("/save")
-    public String taskSave(@ModelAttribute("task") TaskDTO task){
+    public String taskSave(TaskDTO task){
 
         taskService.save(task);
         return "redirect:/task/create";
@@ -50,10 +50,10 @@ public class TaskControl {
         return "/task/update";
     }
 
-    @PostMapping("/update/{taskId}")
-    public String taskUpdate(@PathVariable("taskId") Long taskId,@ModelAttribute("task") TaskDTO task){
+    @PostMapping("/update/{id}")
+    public String taskUpdate(TaskDTO task){
 
-        taskService.update(task,taskId);
+        taskService.update(task);
         return "redirect:/task/create";
     }
 
