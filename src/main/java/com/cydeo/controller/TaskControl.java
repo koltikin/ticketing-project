@@ -39,6 +39,25 @@ public class TaskControl {
         return "redirect:/task/create";
     }
 
+    @GetMapping("/update/{taskId}")
+    public String taskCreate(@PathVariable("taskId") Long taskId,Model model){
+
+        model.addAttribute("task",taskService.findById(taskId));
+        model.addAttribute("projects",projectService.findAll());
+        model.addAttribute("employees",userService.findAll());
+        model.addAttribute("tasksList",taskService.findAll());
+
+        return "/task/update";
+    }
+
+    @PostMapping("/update/{taskId}")
+    public String taskUpdate(@PathVariable("taskId") Long taskId,@ModelAttribute("task") TaskDTO task){
+
+        taskService.update(task,taskId);
+        return "redirect:/task/create";
+    }
+
+
 }
 
 

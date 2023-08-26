@@ -7,20 +7,25 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 
 @Service
 @AllArgsConstructor
 public class TaskServiceImpl extends AbstractMapService<TaskDTO, Long> implements TaskService {
-
-    public AtomicLong myAtomicLong;
     @Override
     public TaskDTO save(TaskDTO task) {
-        if(task.getId()==null){
-            task.setId(myAtomicLong.incrementAndGet());
 
+//        if(task.getId()==null){
+//            task.setId(myAtomicLong.incrementAndGet());
+//        }
+
+        if(task.getId()==null){
+            task.setId(UUID.randomUUID().getMostSignificantBits());
         }
+
+
         if(task.getAssignedDate()==null){
             LocalDate assignDate = LocalDate.now();
             task.setAssignedDate(assignDate);
@@ -45,6 +50,15 @@ public class TaskServiceImpl extends AbstractMapService<TaskDTO, Long> implement
     @Override
     public void update(TaskDTO task) {
         super.update(task,task.getId());
+
+    }
+
+    @Override
+    public void update(TaskDTO task, Long taskId) {
+        task.setId(findById(taskId).getId());
+        task.setAssignedDate(findById(taskId).getAssignedDate());
+        task.setTsakStatus(findById(taskId).getTsakStatus());
+        update(task);
 
     }
 }
