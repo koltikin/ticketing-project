@@ -57,6 +57,13 @@ public class TaskControl {
         return "redirect:/task/create";
     }
 
+    @GetMapping("/status")
+    public String taskStatus(Model model){
+
+        return "/task/status-update";
+    }
+
+
 
 }
 
