@@ -19,6 +19,6 @@ public class TaskDTO {
     private String subject;
     private String detail;
     private Status tsakStatus;
-//    @DateTimeFormat(pattern = "yyyy.MM.dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate assignedDate;
 }

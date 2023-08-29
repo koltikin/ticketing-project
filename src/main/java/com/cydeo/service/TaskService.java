@@ -13,4 +13,8 @@ public interface TaskService extends CrudService<TaskDTO,Long>{
 
     void updateProjectInTask(ProjectDTO project);
 
+    List<TaskDTO> findAllTasksNotCompleted();
+
+    void updateStatus(TaskDTO task);
+
 }
