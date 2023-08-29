@@ -40,7 +40,7 @@ public class TaskControl {
     }
 
     @GetMapping("/update/{taskId}")
-    public String taskCreate(@PathVariable("taskId") Long taskId,Model model){
+    public String taskUpdate(@PathVariable("taskId") Long taskId,Model model){
 
         model.addAttribute("task",taskService.findById(taskId));
         model.addAttribute("projects",projectService.findAll());
