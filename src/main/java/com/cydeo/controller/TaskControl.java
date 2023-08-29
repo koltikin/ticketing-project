@@ -1,6 +1,7 @@
 package com.cydeo.controller;
 
 import com.cydeo.dto.TaskDTO;
+import com.cydeo.enums.Status;
 import com.cydeo.service.ProjectService;
 import com.cydeo.service.TaskService;
 import com.cydeo.service.UserService;
@@ -8,6 +9,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @Controller
@@ -40,7 +43,7 @@ public class TaskControl {
     }
 
     @GetMapping("/update/{taskId}")
-    public String taskCreate(@PathVariable("taskId") Long taskId,Model model){
+    public String taskUpdate(@PathVariable("taskId") Long taskId,Model model){
 
         model.addAttribute("task",taskService.findById(taskId));
         model.addAttribute("projects",projectService.findAll());
@@ -63,7 +66,42 @@ public class TaskControl {
         return "/task/status-update";
     }
 
+    @GetMapping("/employee/pending-tasks")
+    public String pendingTasks(Model model){
 
+        model.addAttribute("tasks",taskService.findAllTasksNotCompleted());
+
+        return "/task/pending-tasks";
+    }
+
+    @GetMapping("/employee/update/{id}")
+    public String pendingTaskUpdate(@PathVariable("id") Long id, Model model){
+
+        model.addAttribute("task", taskService.findById(id));
+        model.addAttribute("statuses", Status.values());
+        model.addAttribute("tasks",taskService.findAll());
+
+        return "/task/status-update";
+
+    }
+
+    @PostMapping("/employee/update/{id}/{assignedDate}")
+    public String pendingTaskUpdateSave(TaskDTO task){
+
+        taskService.updateStatus(task);
+
+
+        return "redirect:/task/employee/pending-tasks";
+
+    }
+    @GetMapping("/employee/archive")
+    public String taskArchive(Model model){
+
+        model.addAttribute("tasks", taskService.findAllTasksByStatus(Status.COMPLETE));
+
+        return "/task/archive";
+
+    }
 
 }
 

@@ -1,4 +1,5 @@
 package com.cydeo.service.impl;
+import com.cydeo.dto.ProjectDTO;
 import com.cydeo.dto.RoleDTO;
 import com.cydeo.dto.TaskDTO;
 import com.cydeo.dto.UserDTO;
@@ -53,13 +54,10 @@ public class TaskServiceImpl extends AbstractMapService<TaskDTO, Long> implement
     @Override
     public void update(TaskDTO task) {
 
-        if(task.getAssignedDate()==null){
-            LocalDate assignDate = LocalDate.now();
-            task.setAssignedDate(assignDate);
-        }
-        if(task.getTsakStatus()==null){
-            task.setTsakStatus(Status.OPEN);
-        }
+        TaskDTO oldTask = findById(task.getId());
+        task.setTsakStatus(oldTask.getTsakStatus());
+        task.setAssignedDate(oldTask.getAssignedDate());
+
         super.update(task,task.getId());
 
     }
@@ -68,6 +66,37 @@ public class TaskServiceImpl extends AbstractMapService<TaskDTO, Long> implement
     public List<TaskDTO> findTasksByManager(UserDTO manager) {
         return findAll().stream()
                 .filter(task->task.getProject().getManager().equals(manager))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateProjectInTask(ProjectDTO project) {
+        String projCode = project.getProjectCode();
+        TaskDTO taskInDataBase = findAll().stream()
+                .filter(tk->tk.getProject().getProjectCode().equals(projCode)).findAny().get();
+        taskInDataBase.setProject(project);
+
+
+    }
+
+    @Override
+    public List<TaskDTO> findAllTasksNotCompleted() {
+        return findAll().stream()
+                .filter(tk->!tk.getTsakStatus().equals(Status.COMPLETE))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateStatus(TaskDTO task) {
+//        var id = task.getId();
+//        task.setAssignedDate(findById(id).getAssignedDate());
+        super.update(task,task.getId());
+
+    }
+
+    @Override
+    public List<TaskDTO> findAllTasksByStatus(Status status) {
+        return findAll().stream().filter(tk->tk.getTsakStatus().equals(status))
                 .collect(Collectors.toList());
     }
 }

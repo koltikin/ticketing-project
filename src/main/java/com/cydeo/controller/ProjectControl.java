@@ -3,6 +3,7 @@ import com.cydeo.dto.ProjectDTO;
 import com.cydeo.dto.UserDTO;
 import com.cydeo.enums.Status;
 import com.cydeo.service.ProjectService;
+import com.cydeo.service.TaskService;
 import com.cydeo.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ public class ProjectControl {
 
     private final UserService userService;
     private final ProjectService projectService;
+    private final TaskService taskService;
     @GetMapping("/create")
     public String projectCreate(Model model){
 
@@ -53,6 +55,7 @@ public class ProjectControl {
     @PostMapping("/update")
     public String projectUpdate(@ModelAttribute("project") ProjectDTO project){
 
+        taskService.updateProjectInTask(project);
         projectService.update(project);
         return "redirect:/project/create";
     }
@@ -78,7 +81,6 @@ public class ProjectControl {
 
     @GetMapping("/manager/status-complete/{id}")
     public String statusComplete(@PathVariable("id") String id) {
-        System.out.println(id);
 
         projectService.findById(id).setProjectStatus(Status.COMPLETE);
 
