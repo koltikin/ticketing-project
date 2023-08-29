@@ -17,14 +17,6 @@ public class RoleDtoConverter implements Converter<String, RoleDTO> {
         return roleService.findById(Long.parseLong(id));
     }
 
-    public Gender fromString(String text) {
-        for (Gender gender : Gender.values()) {
-            if (gender.getValue().equalsIgnoreCase(text)) {
-                return gender;
-            }
-        }
-        return null;
-    }
 }
 
 
